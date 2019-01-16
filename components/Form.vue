@@ -102,8 +102,13 @@ export default {
         this.encode({
           "form-name": "contact",
           ...this.form
-        }),
-        axiosConfig
+        })
+          .then(() => {
+            alert("submitted");
+          })
+          .catch(() => {
+            alert("failed");
+          })
       );
     }
   }

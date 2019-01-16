@@ -4,8 +4,8 @@
     name="contact"
     method="post"
     netlify
-    @submit.prevent="validateBeforeSubmit"
-    netlify-honeypot="bot-field">
+    netlify-honeypot="bot-field"
+    @submit.prevent="validateBeforeSubmit">
     <input
       type="hidden"
       name="form-name"
@@ -15,23 +15,56 @@
     </p>
 
     <div class="column is-12">
-      <label class="block text-blackbasic font-bold md:text-right mb-1 md:mb-0 pr-4" for="email">Name</label>
-          <input class="appearance-none block w-full bg-grey-lightest text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="name" v-model="name" v-validate="'required|max:60'" :class="{'input': true, 'border-red': errors.has('name') }" type="text" placeholder="Email">
-          <span v-show="errors.has('name')" class="text-red text-xs italic">{{ errors.first('name') }}</span>
+      <label
+        class="block text-blackbasic font-bold md:text-right mb-1 md:mb-0 pr-4"
+        for="email">Name</label>
+      <input
+        v-validate="'required|max:60'"
+        v-model="name"
+        :class="{'input': true, 'border-red': errors.has('name') }"
+        class="appearance-none block w-full bg-grey-lightest text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        name="name"
+        type="text"
+        placeholder="Email">
+      <span
+        v-show="errors.has('name')"
+        class="text-red text-xs italic">{{ errors.first('name') }}</span>
     </div>
 
     <div class="column is-12">
-      <label class="block text-blackbasic font-bold md:text-right mb-1 md:mb-0 pr-4" for="email">Email</label>
-          <input class="appearance-none block w-full bg-grey-lightest text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="email" v-model="email" v-validate="'required|email'" :class="{'input': true, 'border-red': errors.has('email') }" type="text" placeholder="Email">
-          <span v-show="errors.has('email')" class="text-red text-xs italic">{{ errors.first('email') }}</span>
+      <label
+        class="block text-blackbasic font-bold md:text-right mb-1 md:mb-0 pr-4"
+        for="email">Email</label>
+      <input
+        v-validate="'required|email'"
+        v-model="email"
+        :class="{'input': true, 'border-red': errors.has('email') }"
+        class="appearance-none block w-full bg-grey-lightest text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        name="email"
+        type="text"
+        placeholder="Email">
+      <span
+        v-show="errors.has('email')"
+        class="text-red text-xs italic">{{ errors.first('email') }}</span>
     </div>
 
 
 
     <div class="column is-12">
-      <label class="block text-blackbasic font-bold md:text-right mb-1 md:mb-0 pr-4" for="message">Message</label>
-      <textarea name="message" class="w-full h-32 bg-grey-lightest text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none" style="vertical-align: top;" v-model="message" v-validate="'required|max:360'" :class="{'input': true, 'border-red': errors.has('message') }" type="textarea"></textarea>
-      <span v-show="errors.has('message')" class="text-red text-xs italic">{{ errors.first('message') }}</span>
+      <label
+        class="block text-blackbasic font-bold md:text-right mb-1 md:mb-0 pr-4"
+        for="message">Message</label>
+      <textarea
+        v-validate="'required|max:360'"
+        v-model="message"
+        :class="{'input': true, 'border-red': errors.has('message') }"
+        name="message"
+        class="w-full h-32 bg-grey-lightest text-grey-darker border rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
+        style="vertical-align: top;"
+        type="textarea"/>
+      <span
+        v-show="errors.has('message')"
+        class="text-red text-xs italic">{{ errors.first('message') }}</span>
     </div>
 
     <div class="flex justify-end">
@@ -44,23 +77,42 @@
 
 </template>
 <script>
+import axios from "axios";
 export default {
-  name: 'contact',
+  name: "Contact",
   data: () => ({
-    email: '',
-    name: '',
-    message: ''
+    email: "",
+    name: "",
+    message: ""
   }),
   methods: {
+    encode(data) {
+      return Object.keys(data)
+        .map(
+          key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`
+        )
+        .join("&");
+    },
     validateBeforeSubmit() {
-      this.$validator.validateAll().then((result) => {
+      const axiosConfig = {
+        header: { "Content-Type": "application/x-www-form-urlencoded" }
+      };
+      axios.post(
+        "/",
+        this.encode({
+          "form-name": "ask-question",
+          ...this.form
+        }),
+        axiosConfig
+      );
+      this.$validator.validateAll().then(result => {
         if (result) {
           // eslint-disable-next-line
           alert('Form Validated!');
           return;
         }
 
-        alert('Correct them errors!');
+        alert("Correct them errors!");
       });
     }
   }

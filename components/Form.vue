@@ -110,6 +110,15 @@ export default {
             alert("failed");
           })
       );
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          // eslint-disable-next-line
+          alert('Form Validated!');
+          return;
+        }
+
+        alert("Correct them errors!");
+      });
     }
   }
 };

@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import home from "~/content/home.json";
-
 import appForm from "~/components/Form.vue";
 export default {
   components: {

@@ -94,6 +94,15 @@ export default {
         .join("&");
     },
     validateBeforeSubmit() {
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          // eslint-disable-next-line
+          alert('Form Validated!');
+          return;
+        }
+
+        alert("Correct them errors!");
+      });
       const axiosConfig = {
         header: { "Content-Type": "application/x-www-form-urlencoded" }
       };
@@ -110,15 +119,6 @@ export default {
             alert("failed");
           })
       );
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          // eslint-disable-next-line
-          alert('Form Validated!');
-          return;
-        }
-
-        alert("Correct them errors!");
-      });
     }
   }
 };

@@ -57,7 +57,9 @@ export default {
         if (result) {
           // eslint-disable-next-line
           alert('Form Validated!');
+          return;
         }
+
         alert('Correct them errors!');
       });
     }

@@ -3,7 +3,7 @@
   <form
     name="contact"
     method="post"
-    netlify
+    data-netlify="true"
     @submit.prevent="validateBeforeSubmit"
     netlify-honeypot="bot-field">
     <input
